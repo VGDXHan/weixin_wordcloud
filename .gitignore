@@ -7,6 +7,9 @@ dist/
 # Rust / Tauri
 /src-tauri/target/
 
+# Local agent workflow
+/agent_hub/
+
 # Editor / OS
 .vscode/*
 !.vscode/extensions.json
