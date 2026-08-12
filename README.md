@@ -1,148 +1,134 @@
-<p align="center">
-  <img src="app.jpg" alt="WeFlow 应用预览" width="90%">
-</p>
+# 微信聊天词云
 
-<h1 align="center">WeFlow</h1>
+选择微信会话 → 读取本机微信 4.x 聊天记录 → **导出为本地 JSON** / **生成词云并导出 PNG**。
 
-<p align="center">
-  WeFlow 是一个<strong>完全本地</strong>的微信<strong>实时</strong>聊天记录查看、分析与导出工具。<br>
-  它可以获取你的微信聊天记录并将其导出，还可以根据你的聊天记录为你生成独一无二的数据与年度报告。
-</p>
+全程本地运行，数据不出本机。仅用于读取**你自己机器上、你自己账号**的微信数据。
 
-<p align="center">
-  <a href="https://github.com/hicccc77/WeFlow/stargazers"><img src="https://img.shields.io/github/stars/hicccc77/WeFlow?style=flat&label=Stars&labelColor=2A3B4C&color=60A5FA" alt="Stargazers"></a>
-  <a href="https://github.com/hicccc77/WeFlow/network/members"><img src="https://img.shields.io/github/forks/hicccc77/WeFlow?style=flat&label=Forks&labelColor=2A3B4C&color=60A5FA" alt="Forks"></a>
-  <a href="https://github.com/hicccc77/WeFlow/releases"><img src="https://img.shields.io/github/downloads/hicccc77/WeFlow/total?style=flat&label=Downloads&labelColor=2A3B4C&color=60A5FA" alt="Downloads"></a>
-  <br><br>
-  <a href="https://t.me/weflow_cc"><img src="https://img.shields.io/badge/Telegram-频道-60A5FA?style=flat&logo=telegram&logoColor=white&labelColor=2A3B4C&color=60A5FA" alt="Telegram Channel" style="height: 24px; vertical-align: middle;"></a>
-  <a href="https://star-history.com/#hicccc77/WeFlow"><img src="https://api.star-history.com/badge?repo=hicccc77/WeFlow&theme=dark" alt="Star History Rank" style="height: 30px; vertical-align: middle;"></a>
-</p>
+- 平台：Windows + 微信 4.x
+- 技术栈：Tauri 2.x + Rust 后端 + 原生 TypeScript/Vite 前端
+- 密钥提取复用原生库 `wx_key.dll`；**SQLCipher-4 解密与数据库读取为本项目自实现**
 
-> [!TIP]
-> 仅支持微信 **4.0 及以上**版本
->
-> 如果导出聊天记录后，想深入分析聊天内容可以试试 [ChatLab](https://chatlab.fun/)
+## 一、构建与运行
 
-
-## 主要功能
-
-- 本地实时查看聊天记录
-- 朋友圈图片、视频、**实况**的预览和解密
-- 统计分析与群聊画像
-- 年度报告与可视化概览
-- 导出聊天记录为 HTML 等格式
-- HTTP API 接口（面向开发者）
-- 查看完整能力清单：[详细功能](#详细功能清单)
-
-## 支持平台与设备
-
-| 平台 | 设备/架构 | 安装包 |
-|------|----------|--------|
-| Windows | Windows10+、x64 | `.exe` |
-| macOS | Apple Silicon（M 系列，arm64） | `.dmg` |
-| Linux | x64 设备（amd64） | `.AppImage`、`.tar.gz` |
-
-## 快速开始
-
-若你只想使用成品版本，可前往 [Releases](https://github.com/hicccc77/WeFlow/releases) 下载并安装。
-
-ArchLinux 用户可以选择 `yay -S weflow` 快速安装
-
-## 详细功能清单
-
-| 功能模块 | 说明 |
-|---------|------|
-| **聊天** | 解密聊天中的图片、视频、实况（仅支持谷歌协议拍摄的实况）；支持**修改**、删除**本地**消息；实时刷新最新消息，无需生成解密中间数据库 |
-| **消息防撤回** | 防止其他人发送的消息被撤回 |
-| **实时弹窗通知** | 新消息到达时提供桌面弹窗提醒，便于及时查看重要会话，提供黑白名单功能 |
-| **私聊分析** | 统计好友间消息数量；分析消息类型与发送比例；查看消息时段分布等 |
-| **群聊分析** | 查看群成员详细信息；分析群内发言排行、活跃时段和媒体内容 |
-| **年度报告** | 生成按年统计的年度报告，或跨年度的长期历史报告 |
-| **双人报告** | 选择指定好友，基于双方聊天记录生成专属分析报告 |
-| **消息导出** | 将微信聊天记录导出为多种格式：JSON、HTML、TXT、Excel、CSV、PGSQL、ChatLab专属格式等 |
-| **朋友圈** | 解密朋友圈图片、视频、实况；导出朋友圈内容；拦截朋友圈的删除与隐藏操作；突破时间访问限制 |
-| **联系人** | 导出微信好友、群聊、公众号信息；尝试找回曾经的好友（功能尚不完善） |
-| **HTTP API 映射** | 将本地消息能力映射为 HTTP API，便于对接外部系统、自动化脚本与二次开发 |
-
-## HTTP API
-
-WeFlow 提供本地 HTTP API 服务，支持通过接口查询消息数据，可用于与其他工具集成或二次开发。
-
-- **启用方式**：设置 → API 服务 → 启动服务
-- **默认端口**：5031
-- **访问地址**：`http://127.0.0.1:5031`
-- **支持格式**：原始 JSON 或 [ChatLab](https://chatlab.fun/) 标准格式
-
-完整接口文档：[点击查看](docs/HTTP-API.md)
-
-## 面向开发者
-
-如果你想从源码构建或为项目贡献代码，请遵循以下步骤：
-
-```bash
-# 1. 克隆项目到本地
-git clone https://github.com/hicccc77/WeFlow.git
-cd WeFlow
-
-# 2. 安装项目依赖
+```powershell
 npm install
-
-# 3. 运行应用（开发模式）
-npm run dev
+npm run build          # tsc --noEmit && vite build
+cd src-tauri
+cargo build            # 或 cargo test 跑单测
+cd ..
+npm run tauri dev      # 开发运行
+npm run tauri build    # 打生产包
 ```
 
-## 致谢
+### 必须以管理员身份运行
 
-- [密语 CipherTalk](https://github.com/ILoveBingLu/miyu) 为本项目提供了基础框架
-- [WeChat-Channels-Video-File-Decryption](https://github.com/Evil0ctal/WeChat-Channels-Video-File-Decryption) 提供了视频解密相关的技术参考
+`wx_key.dll` 需要 Hook 微信进程内存，**没有管理员权限一定失败**。
 
-## 推广与合作
+- 开发调试：以管理员身份打开 PowerShell，运行 `scripts\run-dev-admin.ps1`
+  （它会先清掉上一次残留的 dev 进程并释放 1420 端口，再 `npm run tauri dev`）。
+- 生产使用：右键可执行文件 → **以管理员身份运行**。
 
-如果您对 **WeFlow** 有兴趣，或者希望与我们展开深度合作，欢迎随时通过邮件取得联系。我们非常期待与各位创作者、开发者及合作伙伴共同探索。
+确认权限是否生效：如果诊断里「提取数据库密钥」报「初始化 Hook 失败」，基本就是没拿到管理员权限。
 
-### 联系方式
+## 二、抓取密钥的时机（最关键的一步）
 
-欢迎发送邮件至：
+`wx_key.dll` 是在微信**派生数据库密钥的那一瞬间**（也就是**登录时**）把密钥截获下来的。
+如果微信**早就登录好了**，这个时机已经过去，Hook 挂上去也等不到密钥。
 
-<a href="mailto:yccccccy@proton.me"><img src="https://img.shields.io/badge/Email-yccccccy%40proton.me-60A5FA?style=flat-square&logo=proton&logoColor=white&labelColor=2A3B4C" alt="Protonmail" height="24px"></a>
+正确顺序：
 
-## 合作伙伴
+1. 以**管理员**身份启动本应用，界面显示「正在初始化…」（此时 Hook 已挂载，最长等待 180 秒）。
+2. 保持本应用开着，去**彻底退出微信**（托盘图标 → 退出，确认进程 `Weixin.exe` 已消失）。
+3. **重新登录微信**。应用会自动重挂 Hook 并在登录瞬间抓到密钥。
+4. 状态栏变成「已连接微信数据 wxid_xxx」即为**真实模式**，左侧列出真实会话。
 
-我们非常欢迎优秀的开源社区项目团队或其他团队与我们建立长期合作关系。期待与 WeFlow 携手并进，共同建设更开放的生态！
+抓取过程中界面不会卡死（耗时操作都在后台线程），可以正常点按。
 
-<p align="center">
-  <!-- 是的你没看错这里还是占位！
-  <a href="https://your-partner-website.com" target="_blank">
-    <img src="https://via.placeholder.com/150x50?text=Partner+1+Logo" alt="Partner Name" width="150" style="margin: 10px; vertical-align: middle;" />
-  </a> -->
-</p>
+## 三、导出聊天记录为 JSON
 
----
+1. 在左侧选中一个会话。
+2. 点右上角 **导出 JSON**。
+3. 完成后状态栏显示落盘路径，并自动打开资源管理器定位到该文件。
 
-## 贡献者
+落盘位置：
 
-感谢所有做出贡献的开发者！
+```text
+%USERPROFILE%\Documents\微信词云导出\<会话名>_<yyyyMMdd_HHmmss>.json
+```
 
-<p align="center">
-  <a href="https://github.com/hicccc77/WeFlow/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=hicccc77/WeFlow" alt="Contributors" />
-  </a>
-</p>
+「最多消息」输入框同时控制导出条数上限与词云取样条数，取的是**最近的 N 条**。
 
-## Star History
+文件结构：
 
-<a href="https://www.star-history.com/#hicccc77/WeFlow&type=date&legend=top-left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=hicccc77/WeFlow&type=date&theme=dark&legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=hicccc77/WeFlow&type=date&legend=top-left" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=hicccc77/WeFlow&type=date&legend=top-left" />
-  </picture>
-</a>
+```json
+{
+  "wxid": "wxid_me",
+  "talker": "wxid_friend",
+  "displayName": "张三",
+  "exportedAt": "2026-08-12T12:00:00+08:00",
+  "count": 2,
+  "messages": [
+    {
+      "timestamp": 1700000000,
+      "timeText": "2023-11-15 06:13:20",
+      "sender": "wxid_friend",
+      "isSelf": false,
+      "type": 1,
+      "typeLabel": "文本",
+      "text": "今天一起去看电影"
+    },
+    {
+      "timestamp": 1700000060,
+      "timeText": "2023-11-15 06:14:20",
+      "sender": "wxid_friend",
+      "isSelf": false,
+      "type": 3,
+      "typeLabel": "图片",
+      "text": "[图片]"
+    }
+  ]
+}
+```
 
-<div align="center">
+消息按时间**升序**排列。**不导出媒体文件**：图片/语音/视频只保留类型标记与
+`[图片]` 这类占位文本。词云只统计文本消息（`type == 1`）。
 
----
+## 四、生成词云
 
-**请负责任地使用本工具，遵守相关法律法规**
+选中会话即自动生成；「词数」控制取 Top-N 词；点 **导出 PNG** 保存图片。
+分词用 jieba，并过滤了常见停用词、URL、纯数字与单字。
 
-</div>
+真实模式下第一次选择会话时，需要先逐页解密编号消息库；开发模式通常需要 **1–3 分钟**，
+期间界面会显示「首次读取正在解密消息库」。请等待完成，不要连续重复点击。解密结果会在本次
+运行中复用，后续切换会话和导出会快很多。
+
+## 五、真实读取失败时的排查
+
+界面左侧有 **诊断真实读取** 按钮，会逐步检查四个环节并给出具体原因：
+
+| 环节 | 失败常见原因与处理 |
+|---|---|
+| 微信账号目录 | 微信 4.x 未登录过，或数据目录被搬到非常规位置。可设环境变量 `WECHAT_DATA_DIR` 指向含 `xwechat_files` 的目录。 |
+| `wx_key.dll` | 未随包分发。应位于 `src-tauri/resources/wx_key.dll`，或用 `WX_KEY_DLL` 指定绝对路径。 |
+| 提取数据库密钥 | **最常见**。九成是没用管理员运行，或没有在「正在初始化」期间重新登录微信；杀毒软件拦截内存读取也会失败（读取其他进程内存易被误报，需临时放行）。 |
+| 解密参数探测 | 该微信版本的加密参数不在探测范围内，属版本不兼容。 |
+
+其他现象：
+
+- **进入了演示模式**：状态栏会显示「演示模式：<失败原因>（已切换到演示数据）」。
+  程序不会崩溃，仍可用演示数据体验词云与 JSON 导出，方便验证功能本身。
+- **会话列表是 4 条「（演示）」数据**：说明仍在演示模式，按上表排查。
+- **真实模式下会话或消息为空**：多半是该微信版本的**表名/字段与内置候选不匹配**。
+  点侧栏的 **导出结构** 按钮，会把解密后各数据库的「表 → 字段」导出成
+  `Documents\微信词云导出\schema_<时间戳>.json` 并打开所在文件夹；
+  按它校准 `src-tauri/src/dbread.rs` 顶部的 `*_COLS` 常量与 `Msg_<md5(talker)>` 表名匹配规则即可。
+  （该按钮只在真实模式下有内容；演示模式会提示「演示模式没有真实表结构」。）
+- **导出报「该会话没有可导出的消息」**：同上，是消息表未命中，而非导出逻辑问题。
+
+临时明文数据库写在 `%TEMP%\weixin_wordcloud_<pid>\`，每次启动会清理上一次遗留的目录。
+
+## 六、已知边界
+
+- 仅支持 Windows + 微信 4.x（不支持微信 3.x、macOS、Linux）。
+- 不做群聊按发言人细分统计、时间范围筛选、自定义词云形状/配色。
+- 不导出媒体文件，不做语音转文字。

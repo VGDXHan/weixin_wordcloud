@@ -3,10 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WeFlow</title>
+    <title>微信聊天词云</title>
+    <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="app">
+      <aside class="sidebar">
+        <header class="side-head">
+          <h1>微信词云</h1>
+          <button id="refresh" class="btn-ghost" title="重新加载会话">刷新</button>
+        </header>
+        <div id="status" class="status">正在初始化…</div>
+        <div class="side-actions">
+          <button id="diagnose" class="btn-ghost" title="逐步检查真实读取链路">
+            诊断真实读取
+          </button>
+          <button
+            id="export-schema"
+            class="btn-ghost"
+            title="真实模式下会话或消息为空时，导出数据库表结构用于校准"
+          >
+            导出结构
+          </button>
+        </div>
+        <div id="diagnostics" class="diagnostics hidden"></div>
+        <input id="search" class="search" type="text" placeholder="搜索会话…" />
+        <ul id="sessions" class="sessions"></ul>
+      </aside>
+
+      <main class="main">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span id="current-title" class="current-title">请选择左侧会话</span>
+          </div>
+          <div class="toolbar-right">
+            <label class="field">
+              最多消息
+              <input id="limit" type="number" min="100" max="500000" step="100" value="30000" />
+            </label>
+            <label class="field">
+              词数
+              <input id="topn" type="number" min="20" max="500" step="10" value="150" />
+            </label>
+            <button id="export-json" class="btn-ghost" disabled title="把该会话的聊天记录保存为本地 JSON">
+              导出 JSON
+            </button>
+            <button id="export" class="btn-primary" disabled>导出 PNG</button>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="cloud" width="1000" height="640"></canvas>
+          <div id="hint" class="hint">选择一个会话即可生成词云</div>
+          <div id="loading" class="loading hidden">生成中…</div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
